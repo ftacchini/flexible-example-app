@@ -1,0 +1,42 @@
+{
+  "name": "flexible-example-app",
+  "version": "1.0.0",
+  "description": "Example flexible application using the decorated framework and http source",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "start": "node",
+    "test": "npm run unit-test && npm run integration-test",
+    "unit-test": "jasmine JASMINE_CONFIG_PATH=jasmine.unit-test.json",
+    "integration-test": "jasmine JASMINE_CONFIG_PATH=jasmine.integration-test.json",
+    "build": "rimraf dist && rimraf dts && tsc",
+    "version-minor": "npm version minor && git push && git push --tags",
+    "version-patch": "npm version patch && git push && git push --tags",
+    "version-major": "npm version major && git push && git push --tags"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftacchini/flexible-example-app.git"
+  },
+  "author": "ftacchini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ftacchini/flexible-example-app/issues"
+  },
+  "homepage": "https://github.com/ftacchini/flexible-example-app#readme",
+  "typings": "./dts/src/index.d.ts",
+  "dependencies": {
+    "flexible-core": "0.0.20",
+    "flexible-decorators": "0.0.3",
+    "flexible-http": "0.0.5",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.4.0",
+    "jasmine": "^3.4.0",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.2"
+  }
+}

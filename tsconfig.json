@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es6",
+        "lib": ["es6"],
+        "noImplicitAny": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "experimentalDecorators": true,
+        "types": ["node"],
+        "emitDecoratorMetadata": true,
+        "declaration": true,
+        "declarationDir": "dts"
+    },
+    "include": [
+        "src/**/*",
+        "test/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

@@ -1,0 +1,10 @@
+npm-debug.log
+.idea
+.vscode
+.gitignore
+/src
+/test
+tsconfig.json
+jasmine.*.json
+/dist/test
+/dts/test
