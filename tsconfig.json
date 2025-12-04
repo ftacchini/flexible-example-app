@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
-        "lib": ["es6"],
-        "noImplicitAny": true,
+        "target": "ES2022",
+        "lib": ["ES2022"],
+        "noImplicitAny": false,
+        "strict": false,
         "removeComments": true,
         "sourceMap": true,
         "outDir": "dist",
@@ -11,7 +12,11 @@
         "types": ["node"],
         "emitDecoratorMetadata": true,
         "declaration": true,
-        "declarationDir": "dts"
+        "declarationDir": "dts",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true
     },
     "include": [
         "src/**/*",
