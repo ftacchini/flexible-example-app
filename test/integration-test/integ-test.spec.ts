@@ -90,7 +90,7 @@ describe("Flexible Example App Integration Tests", () => {
         // ACT
         await app.run();
         await new Promise(resolve => setTimeout(resolve, 100)); // Give server time to fully initialize
-        const result = await fetchJson(`http://localhost:${TEST_PORT}/world`);
+        const result = await fetchJson(`http://127.0.0.1:${TEST_PORT}/world`);
 
         // ASSERT
         expect(result).toEqual(expected);
