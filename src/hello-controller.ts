@@ -4,7 +4,7 @@ import { HttpGet } from "flexible-http";
 @Controller()
 export class HelloController {
 
-    @Route(HttpGet, { path: "/world" })
+    @Route(HttpGet)
     public world(): any {
         return { some: "world" };
     }
