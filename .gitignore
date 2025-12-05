@@ -3,4 +3,6 @@ npm-debug.log.*
 .idea
 .vscode
 /dist
-/dtspackage-lock.json
+/dts
+package-lock.json
+logs

@@ -1,9 +1,7 @@
 import "reflect-metadata";
 import "jasmine";
-import { FlexibleApp, FlexibleAppBuilder, SilentLoggerModule } from "flexible-core";
-import { DecoratorsFrameworkModuleBuilder, ExplicitControllerLoader } from "flexible-decorators";
-import { HttpModuleBuilder } from "flexible-http";
-import { HelloController } from "../../src/hello-controller";
+import { FlexibleApp, SilentLoggerModule } from "flexible-core";
+import { createApplication } from "../../src/index";
 import * as http from 'http';
 
 const TEST_PORT = 3001;
@@ -45,31 +43,12 @@ async function fetchJson(url: string): Promise<any> {
     });
 }
 
-// Helper function to create the app - same setup as index.ts but with configurable port and logger
-function createApp(port: number): FlexibleApp {
-    const httpEventSource = HttpModuleBuilder.instance
-        .withPort(port)
-        .build();
-
-    const decoratorsFramework = DecoratorsFrameworkModuleBuilder.instance
-        .withControllerLoader(new ExplicitControllerLoader([
-            HelloController
-        ]))
-        .build();
-
-    return FlexibleAppBuilder.instance
-        .withLogger(new SilentLoggerModule())
-        .addEventSource(httpEventSource)
-        .addFramework(decoratorsFramework)
-        .createApp();
-}
-
 describe("Flexible Example App Integration Tests", () => {
 
     let app: FlexibleApp;
 
     beforeEach(async () => {
-        app = createApp(TEST_PORT);
+        app = createApplication(TEST_PORT, new SilentLoggerModule());
     });
 
     afterEach(async () => {
