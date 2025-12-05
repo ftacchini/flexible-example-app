@@ -43,21 +43,16 @@ jobs:
       working-directory: flexible-decorators
       run: |
         npm install ../flexible-core
-        npm install
         npm run build
     - name: Install and build flexible-http
       working-directory: flexible-http
       run: |
         npm install ../flexible-core
-        npm install
         npm run build
     - name: Install, build, and test flexible-example-app
       working-directory: flexible-example-app
       run: |
-        npm install ../flexible-core
-        npm install ../flexible-decorators
-        npm install ../flexible-http
-        npm install
+        npm install ../flexible-core ../flexible-decorators ../flexible-http
         npm run build --if-present
         npm run test
       env:
