@@ -1,10 +1,10 @@
 import { Controller, Route } from "flexible-decorators";
-import { HttpGet, HttpMethod } from "flexible-http";
+import { HttpGet } from "flexible-http";
 
-@Controller({ filter: HttpMethod })
+@Controller()
 export class HelloController {
 
-    @Route(HttpGet)
+    @Route(HttpGet, { path: "/world" })
     public world(): any {
         return { some: "world" };
     }
