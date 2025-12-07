@@ -2,9 +2,9 @@
   "name": "flexible-example-app",
   "version": "1.1.0",
   "description": "Example flexible application using the decorated framework and http source",
-  "main": "dist/src/index.js",
+  "main": "dist/src/examples/03-winston-logger/index.js",
   "scripts": {
-    "start": "node",
+    "start": "node dist/src/examples/03-winston-logger/index.js",
     "test": "npm run unit-test && npm run integration-test",
     "unit-test": "jasmine JASMINE_CONFIG_PATH=jasmine.unit-test.json",
     "integration-test": "jasmine JASMINE_CONFIG_PATH=jasmine.integration-test.json",

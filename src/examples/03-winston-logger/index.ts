@@ -19,7 +19,7 @@ export function createApplication(port?: number, logger?: FlexibleLoggerModule):
         ]))
         .build();
 
-    const builder = FlexibleAppBuilder.instance
+    const builder = FlexibleApp.builder()
         .addEventSource(httpEventSource)
         .addFramework(decoratorsFramework);
 

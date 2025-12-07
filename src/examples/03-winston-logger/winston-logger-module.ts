@@ -10,7 +10,7 @@ import winston from "winston";
  *
  * Example usage:
  * ```typescript
- * const app = FlexibleAppBuilder.instance
+ * const app = FlexibleApp.builder()
  *     .withLogger(new WinstonLoggerModule({
  *         level: 'info',
  *         format: winston.format.json(),
