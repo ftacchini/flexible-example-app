@@ -3,7 +3,6 @@ import "jasmine";
 import { FlexibleApp } from "flexible-core";
 import { createApplication } from "../../src/examples/03-winston-logger/index";
 import { WinstonLoggerModule } from "../../src/examples/03-winston-logger/winston-logger-module";
-import { HttpModuleBuilder } from "flexible-http";
 import winston from "winston";
 import * as http from 'http';
 import * as fs from 'fs';
@@ -55,8 +54,6 @@ describe("Winston Logger Integration Tests", () => {
     let app: FlexibleApp;
 
     beforeEach(() => {
-        HttpModuleBuilder.instance.reset();
-
         // Create test log directory
         if (!fs.existsSync(TEST_LOG_DIR)) {
             fs.mkdirSync(TEST_LOG_DIR, { recursive: true });
@@ -98,8 +95,6 @@ describe("Winston Logger Integration Tests", () => {
             await app.stop();
             await new Promise(resolve => setTimeout(resolve, 500));
         }
-
-        HttpModuleBuilder.instance.reset();
 
         // Clean up test log files
         if (fs.existsSync(ERROR_LOG_PATH)) {

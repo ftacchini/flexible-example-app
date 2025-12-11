@@ -1,64 +1,40 @@
 import "reflect-metadata";
 import {
-    FlexibleAppBuilder,
+    FlexibleApp,
     DelegateEventSource
 } from "flexible-core";
 import {
-    DecoratorsFrameworkModuleBuilder,
+    DecoratorsFrameworkModule,
     ExplicitControllerLoader
 } from "flexible-decorators";
-import { HttpModuleBuilder } from "flexible-http";
-import { ContainerModule } from "inversify";
+import { HttpModule } from "flexible-http";
+import { FlexibleContainer } from "flexible-core";
 import { BusinessController } from "./business-controller";
 import { SecurityController } from "./security-controller";
 
-export const NEXT_LAYER = Symbol("NextLayer");
+export const NEXT_LAYER = "NextLayer";
 
 export async function createComposableApp(port?: number) {
+
     const httpPort = port || parseInt(process.env.PORT || "3000", 10);
 
-    // Create HTTP module - this provides filters/extractors like HttpGet, HttpPost, FromBody
-    const httpModule = HttpModuleBuilder.instance.withPort(httpPort).build();
-
     // ============================================
-    // Layer 2: Business Logic (Inner Layer)
+    // Main Container (Shared Bindings)
     // ============================================
+    const mainContainer = new FlexibleContainer();
     const businessEventSource = new DelegateEventSource();
 
-    // Wrap DelegateEventSource in a module
-    const businessEventSourceModule = {
-        getInstance: () => businessEventSource,
-        container: new ContainerModule(() => {}),
-        isolatedContainer: new ContainerModule(() => {})
-    };
-
-    const businessFramework = DecoratorsFrameworkModuleBuilder.instance
-        .withControllerLoader(new ExplicitControllerLoader([
-            BusinessController
-        ]))
-        .build();
-
-    // Business app uses DelegateEventSource and shares HTTP module's container for filters/extractors
-    const businessApp = FlexibleApp.builder()
-        .addModule(httpModule)  // Add as module to get container bindings (filters/extractors)
-        .addEventSource(businessEventSourceModule)
-        .addFramework(businessFramework)
-        .createApp();
-
-    await businessApp.run();
+    // Create HTTP module for security layer (starts the HTTP server)
+    const httpModule = HttpModule.builder().withPort(httpPort).build();
 
     // ============================================
     // Layer 1: Security (Outer Layer - Entry Point)
     // ============================================
 
-    // Module that binds the business layer's event source
-    const securityModule = {
-        container: new ContainerModule(({ bind }) => {
-            bind(NEXT_LAYER).toConstantValue(businessEventSource);
-        })
-    };
+    // Register NEXT_LAYER in the main container so it's available to all child containers
+    mainContainer.registerValue("NextLayer", businessEventSource);
 
-    const securityFramework = DecoratorsFrameworkModuleBuilder.instance
+    const securityFramework = DecoratorsFrameworkModule.builder()
         .withControllerLoader(new ExplicitControllerLoader([
             SecurityController
         ]))
@@ -66,15 +42,44 @@ export async function createComposableApp(port?: number) {
 
     // Security app uses HTTP module as event source (starts the HTTP server)
     const securityApp = FlexibleApp.builder()
-        .addModule(securityModule)
         .addModule(httpModule)  // Share container bindings
         .addEventSource(httpModule)  // Start HTTP server
         .addFramework(securityFramework)
+        .withContainer(mainContainer)
         .createApp();
 
     await securityApp.run();
 
-    return { securityApp, businessApp };
+    // ============================================
+    // Layer 2: Business Logic (Inner Layer)
+    // ============================================
+
+    // Create business layer child container
+    const businessContainer = mainContainer.createChild();
+
+    // Wrap DelegateEventSource in a module
+    const businessEventSourceModule = {
+        getInstance: () => businessEventSource,
+        register: () => {}, // Empty register method for FlexibleModule interface
+        registerIsolated: () => {} // Empty registerIsolated method for FlexibleEventSourceModule interface
+    };
+
+    const businessFramework = DecoratorsFrameworkModule.builder()
+        .withControllerLoader(new ExplicitControllerLoader([
+            BusinessController
+        ]))
+        .build();
+
+    // Business app uses DelegateEventSource and needs HttpModule for extractors
+    const businessApp = FlexibleApp.builder()
+        .addEventSource(businessEventSourceModule)
+        .addFramework(businessFramework)
+        .withContainer(businessContainer)
+        .createApp();
+
+    await businessApp.run();
+
+    return { securityApp, businessApp, mainContainer, businessContainer };
 }
 
 // Only run if this is the main module

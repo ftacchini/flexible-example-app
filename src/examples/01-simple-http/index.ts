@@ -1,17 +1,17 @@
 import "reflect-metadata";
-import { FlexibleApp, FlexibleAppBuilder } from "flexible-core";
-import { DecoratorsFrameworkModuleBuilder, ExplicitControllerLoader } from "flexible-decorators";
-import { HttpModuleBuilder } from "flexible-http";
+import { FlexibleApp } from "flexible-core";
+import { DecoratorsFrameworkModule, ExplicitControllerLoader } from "flexible-decorators";
+import { HttpModule } from "flexible-http";
 import { HelloController } from "./hello-controller";
 
 export function createApplication(port?: number): FlexibleApp {
     const httpPort = port || parseInt(process.env.PORT || "3000", 10);
 
-    const httpEventSource = HttpModuleBuilder.instance
+    const httpEventSource = HttpModule.builder()
         .withPort(httpPort)
         .build();
 
-    const decoratorsFramework = DecoratorsFrameworkModuleBuilder.instance
+    const decoratorsFramework = DecoratorsFrameworkModule.builder()
         .withControllerLoader(new ExplicitControllerLoader([
             HelloController
         ]))

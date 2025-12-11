@@ -1,5 +1,5 @@
-import { ContainerModule, Container } from "inversify";
-import { FlexibleLoggerModule } from "flexible-core";
+import { DependencyContainer } from "tsyringe";
+import { FlexibleLoggerModule, FlexibleContainer } from "flexible-core";
 import { WinstonLogger } from "./winston-logger";
 import winston from "winston";
 
@@ -26,16 +26,14 @@ export class WinstonLoggerModule implements FlexibleLoggerModule {
 
     constructor(private config?: winston.LoggerOptions) {}
 
-    public get container(): ContainerModule {
-        return new ContainerModule(({ bind }) => {
-            bind(WinstonLogger.TYPE)
-                .toDynamicValue(() => new WinstonLogger(this.config))
-                .inSingletonScope();
+    public register(container: DependencyContainer): void {
+        container.register(WinstonLogger.TYPE, {
+            useFactory: () => new WinstonLogger(this.config)
         });
     }
 
-    public getInstance(container: Container): WinstonLogger {
-        return container.get(this.loggerType);
+    public getInstance(container: FlexibleContainer): WinstonLogger {
+        return container.resolve(this.loggerType);
     }
 
     public get loggerType(): symbol {

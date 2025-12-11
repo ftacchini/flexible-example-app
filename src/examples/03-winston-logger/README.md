@@ -83,7 +83,7 @@ The Winston logger is configured with:
 
 ```typescript
 import { FlexibleLogger, FLEXIBLE_APP_TYPES } from "flexible-core";
-import { inject } from "inversify";
+import { inject } from "tsyringe";
 
 @Controller()
 export class HelloController {
