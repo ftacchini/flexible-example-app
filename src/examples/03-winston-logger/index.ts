@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { FlexibleApp, FlexibleAppBuilder, FlexibleLoggerModule } from "flexible-core";
-import { DecoratorsFrameworkModuleBuilder, ExplicitControllerLoader } from "flexible-decorators";
-import { HttpModuleBuilder } from "flexible-http";
+import { FlexibleApp, FlexibleLoggerModule } from "flexible-core";
+import { DecoratorsFrameworkModule, ExplicitControllerLoader } from "flexible-decorators";
+import { HttpModule } from "flexible-http";
 import { HelloController } from "./hello-controller";
 import { WinstonLoggerModule } from "./winston-logger-module";
 import winston from "winston";
@@ -9,11 +9,11 @@ import winston from "winston";
 export function createApplication(port?: number, logger?: FlexibleLoggerModule): FlexibleApp {
     const httpPort = port || parseInt(process.env.PORT || "3000", 10);
 
-    const httpEventSource = HttpModuleBuilder.instance
+    const httpEventSource = HttpModule.builder()
         .withPort(httpPort)
         .build();
 
-    const decoratorsFramework = DecoratorsFrameworkModuleBuilder.instance
+    const decoratorsFramework = DecoratorsFrameworkModule.builder()
         .withControllerLoader(new ExplicitControllerLoader([
             HelloController
         ]))

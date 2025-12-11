@@ -1,7 +1,5 @@
-import "jasmine";
-
-describe("app", () => {
-    it("should pass", () => {
-        expect(true).toBe(true)
-    })
-})
+describe("Unit Test Suite", () => {
+    it("should run unit tests", () => {
+        expect(true).toBe(true);
+    });
+});

@@ -1,6 +1,4 @@
-import { injectable } from 'inversify';
-import { FlexibleEvent, FullEvent } from 'flexible-core';
-import { Param } from 'flexible-decorators';
+import { injectable } from 'tsyringe';
 
 /**
  * Simple security middleware that logs requests.
@@ -12,11 +10,9 @@ import { Param } from 'flexible-decorators';
 export class SecurityMiddleware {
     private requestCount = 0;
 
-    public async checkSecurity(@Param(FullEvent) event: FlexibleEvent): Promise<void> {
+    public async checkSecurity(): Promise<void> {
         this.requestCount++;
-        const httpEvent = event as any;
-
-        console.log(`[Security] Request #${this.requestCount}: ${httpEvent.routeData?.method || 'unknown'} ${httpEvent.routeData?.route || 'unknown'}`);
+        console.log(`[Security] Request #${this.requestCount} received`);
 
         // Security checks would go here
         // For now, just allow all requests

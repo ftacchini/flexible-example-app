@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import "jasmine";
 import { createApplication } from "../../src/examples/01-simple-http/index";
-import { HttpModuleBuilder } from "flexible-http";
 import * as http from 'http';
 
 const TEST_PORT = 3003;
@@ -51,7 +50,6 @@ describe("Simple HTTP Example Integration Tests", () => {
     let app: any;
 
     beforeEach(async () => {
-        HttpModuleBuilder.instance.reset();
         app = createApplication(TEST_PORT);
     });
 
@@ -60,7 +58,6 @@ describe("Simple HTTP Example Integration Tests", () => {
             await app.stop();
             await new Promise(resolve => setTimeout(resolve, 500));
         }
-        HttpModuleBuilder.instance.reset();
     });
 
     it("should start the application successfully", async () => {
