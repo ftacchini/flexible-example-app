@@ -4,7 +4,6 @@ import { inject, injectable } from "tsyringe";
 import { NEXT_LAYER } from "./index";
 import { SecurityMiddleware } from "./security-middleware";
 
-@injectable()
 @Controller({ singleton: true })
 export class SecurityController {
     constructor(

@@ -2,7 +2,6 @@ import { Controller, Route, Param } from "flexible-decorators";
 import { HttpGet, HttpPost, FromBody } from "flexible-http";
 import { injectable } from "tsyringe";
 
-@injectable()
 @Controller()
 export class HelloController {
 

@@ -3,7 +3,6 @@ import { HttpGet, HttpPost, FromBody } from "flexible-http";
 import { FlexibleLogger, FLEXIBLE_APP_TYPES } from "flexible-core";
 import { inject, injectable } from "tsyringe";
 
-@injectable()
 @Controller()
 export class BusinessController {
 
